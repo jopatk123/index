@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: countdown-app
+    ports:
+      - "10010:80"
+    restart: unless-stopped
+    volumes:
+      - ./logs:/var/log/nginx
+    environment:
+      - TZ=Asia/Shanghai
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.countdown.rule=Host(`43.163.120.212`)"
+      - "traefik.http.services.countdown.loadbalancer.server.port=80"

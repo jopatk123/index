@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下班倒计时</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: #fff;
+            padding: 32px 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+            min-width: 320px;
+        }
+
+        h1 {
+            color: #222;
+            margin-bottom: 24px;
+        }
+
+        label {
+            font-size: 16px;
+            color: #555;
+        }
+
+        input[type="time"] {
+            font-size: 18px;
+            padding: 6px 12px;
+            margin: 12px 0 24px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .countdown {
+            font-size: 2.2em;
+            color: #27ae60;
+            margin-top: 18px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                min-width: 90vw;
+                padding: 18px 6vw;
+            }
+        }
+
+        /* 计算器样式 */
+        .calculator-container {
+            transition: all 0.3s ease;
+        }
+
+        .calculator-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .calc-btn {
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            padding: 10px 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background: #f8f8f8;
+            color: #333;
+        }
+
+        .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .calc-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .calc-btn.number {
+            background: #f8f8f8;
+        }
+
+        .calc-btn.operator:hover {
+            background: #27ae60;
+        }
+
+        .calc-btn.function:hover {
+            background: #2980b9;
+            color: white;
+        }
+
+        .calc-btn.memory:hover {
+            background: #d4ac0d;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div style="display: flex; justify-content: space-between; width: 100%; max-width: 1200px; margin: 0 auto;">
+        <div style="flex: 1;">
+            <!-- 左侧内容：下班倒计时 -->
+            <div class="container">
+                <h1>下班倒计时</h1>
+                <label for="offTime">请选择下班时间：</label>
+                <input type="time" id="offTime" value="17:30">
+                <div class="countdown" id="countdown">距离下班还有 --:--:--</div>
+            </div>
+        </div>
+        <div style="flex: 1; display: flex; justify-content: center; align-items: flex-start; gap: 20px;">
+            <!-- 右侧计算器区域 -->
+            <div class="calculator-container"
+                style="border: 3px solid #e74c3c; border-radius: 12px; padding: 20px; background: #f9f9f9; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+                <h2 style="margin:0 0 15px 0; font-size:1.4em; color:#e74c3c; text-align: center;">高级计算器</h2>
+                <div id="calc-memory"
+                    style="font-size: 0.8em; color: #777; text-align: right; height: 20px; margin-bottom: 5px;">M: 0
+                </div>
+                <div id="calc-display"
+                    style="width:280px; height:50px; background:#fff; border-radius:8px; margin-bottom:15px; display:flex; align-items:center; justify-content:flex-end; padding:0 15px; font-size:1.6em; color:#333; box-shadow:0 1px 6px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
+                    0</div>
+                <div id="calc-buttons"
+                    style="display:grid; grid-template-columns:repeat(5,55px); gap:10px; justify-content:center;">
+                    <button class="calc-btn memory" style="background: #f1c40f;">MC</button>
+                    <button class="calc-btn memory" style="background: #f1c40f;">MR</button>
+                    <button class="calc-btn memory" style="background: #f1c40f;">M+</button>
+                    <button class="calc-btn memory" style="background: #f1c40f;">M-</button>
+                    <button class="calc-btn" style="background: #e74c3c; color: white;">C</button>
+
+                    <button class="calc-btn function" style="background: #3498db;">√</button>
+                    <button class="calc-btn function" style="background: #3498db;">x²</button>
+                    <button class="calc-btn function" style="background: #3498db;">%</button>
+                    <button class="calc-btn function" style="background: #3498db;">±</button>
+                    <button class="calc-btn operator" style="background: #2ecc71; color: white;">/</button>
+
+                    <button class="calc-btn number">7</button>
+                    <button class="calc-btn number">8</button>
+                    <button class="calc-btn number">9</button>
+                    <button class="calc-btn function" style="background: #3498db;">DEL</button>
+                    <button class="calc-btn operator" style="background: #2ecc71; color: white;">*</button>
+
+                    <button class="calc-btn number">4</button>
+                    <button class="calc-btn number">5</button>
+                    <button class="calc-btn number">6</button>
+                    <button class="calc-btn function" style="background: #3498db;">1/x</button>
+                    <button class="calc-btn operator" style="background: #2ecc71; color: white;">-</button>
+
+                    <button class="calc-btn number">1</button>
+                    <button class="calc-btn number">2</button>
+                    <button class="calc-btn number">3</button>
+                    <button class="calc-btn function" style="background: #3498db;">π</button>
+                    <button class="calc-btn operator" style="background: #2ecc71; color: white;">+</button>
+
+                    <button class="calc-btn number" style="grid-column: span 2;">0</button>
+                    <button class="calc-btn number">.</button>
+                    <button class="calc-btn" style="background: #9b59b6; color: white; grid-column: span 2;">=</button>
+                </div>
+            </div>
+            <!-- 税率计算器区域 -->
+            <div class="tax-calculator-container"
+                style="background:#fffbe6; border:2px solid #f1c40f; border-radius:12px; padding:22px 18px; box-shadow:0 2px 10px rgba(241,196,15,0.08); max-width:340px;">
+                <h3 style="margin:0 0 18px 0; color:#b7950b; text-align:center;">税率计算器</h3>
+                <div style="display:flex; flex-direction:column; gap:14px;">
+                    <label style="font-size:15px; color:#555;">含税金额：<input id="tax-included" type="number" min="0"
+                            step="0.01"
+                            style="width:120px; font-size:1em; padding:4px 8px; border-radius:6px; border:1px solid #ccc; margin-left:8px;"></label>
+                    <label style="font-size:15px; color:#555;">不含税金额：<input id="tax-excluded" type="number" min="0"
+                            step="0.01"
+                            style="width:120px; font-size:1em; padding:4px 8px; border-radius:6px; border:1px solid #ccc; margin-left:8px;"></label>
+                    <label style="font-size:15px; color:#555;">税率（%）：<input id="tax-rate" type="number" min="0"
+                            step="0.01"
+                            style="width:80px; font-size:1em; padding:4px 8px; border-radius:6px; border:1px solid #ccc; margin-left:8px;"></label>
+                </div>
+                <div id="tax-tip"
+                    style="margin-top:12px; color:#b7950b; font-size:1em; text-align:center; min-height:22px;"></div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <script>
+
+
+        // 高级计算器功能
+        const calcDisplay = document.getElementById('calc-display');
+        const calcButtons = document.getElementById('calc-buttons');
+        const calcMemory = document.getElementById('calc-memory');
+        let calcValue = '';
+        let lastResult = null;
+        let memoryValue = 0;
+        let isNewCalculation = true;
+
+        // 格式化显示数字
+        function formatNumber(num) {
+            // 处理大数和小数
+            if (Math.abs(num) > 1e10) {
+                return num.toExponential(5);
+            }
+            // 处理小数点后的零
+            let str = String(num);
+            if (str.includes('.')) {
+                str = str.replace(/\.?0+$/, '');
+            }
+            return str;
+        }
+
+        // 更新显示
+        function updateDisplay(value) {
+            calcDisplay.textContent = value;
+        }
+
+        // 更新内存显示
+        function updateMemoryDisplay() {
+            calcMemory.textContent = `M: ${memoryValue !== 0 ? formatNumber(memoryValue) : '0'}`;
+        }
+
+        calcButtons.addEventListener('click', function (e) {
+            if (e.target.tagName !== 'BUTTON') return;
+            const val = e.target.textContent;
+            const btnClass = e.target.className;
+
+            // 处理数字按钮
+            if (btnClass.includes('number')) {
+                if (isNewCalculation) {
+                    calcValue = val;
+                    isNewCalculation = false;
+                } else {
+                    calcValue += val;
+                }
+                updateDisplay(calcValue);
+                return;
+            }
+
+            // 处理运算符按钮
+            if (btnClass.includes('operator')) {
+                if (calcValue === '') {
+                    calcValue = '0';
+                }
+                calcValue += val;
+                updateDisplay(calcValue);
+                isNewCalculation = false;
+                return;
+            }
+
+            // 处理特殊功能按钮
+            switch (val) {
+                case 'C':
+                    calcValue = '';
+                    updateDisplay('0');
+                    isNewCalculation = true;
+                    break;
+
+                case 'DEL':
+                    if (calcValue.length > 0) {
+                        calcValue = calcValue.slice(0, -1);
+                        updateDisplay(calcValue || '0');
+                    }
+                    break;
+
+                case '=':
+                    try {
+                        // 只允许数字和运算符，防止注入
+                        if (/^[\d+\-*/. ]+$/.test(calcValue)) {
+                            lastResult = eval(calcValue);
+                            updateDisplay(formatNumber(lastResult));
+                            calcValue = String(lastResult);
+                            isNewCalculation = true;
+                        } else {
+                            updateDisplay('错误');
+                            calcValue = '';
+                            isNewCalculation = true;
+                        }
+                    } catch (error) {
+                        updateDisplay('错误');
+                        calcValue = '';
+                        isNewCalculation = true;
+                    }
+                    break;
+
+                case '√':
+                    try {
+                        const num = parseFloat(calcValue || '0');
+                        if (num >= 0) {
+                            lastResult = Math.sqrt(num);
+                            updateDisplay(formatNumber(lastResult));
+                            calcValue = String(lastResult);
+                            isNewCalculation = true;
+                        } else {
+                            updateDisplay('错误');
+                        }
+                    } catch {
+                        updateDisplay('错误');
+                    }
+                    break;
+
+                case 'x²':
+                    try {
+                        const num = parseFloat(calcValue || '0');
+                        lastResult = num * num;
+                        updateDisplay(formatNumber(lastResult));
+                        calcValue = String(lastResult);
+                        isNewCalculation = true;
+                    } catch {
+                        updateDisplay('错误');
+                    }
+                    break;
+
+                case '%':
+                    try {
+                        const num = parseFloat(calcValue || '0');
+                        lastResult = num / 100;
+                        updateDisplay(formatNumber(lastResult));
+                        calcValue = String(lastResult);
+                        isNewCalculation = true;
+                    } catch {
+                        updateDisplay('错误');
+                    }
+                    break;
+
+                case '±':
+                    try {
+                        if (calcValue) {
+                            if (calcValue.startsWith('-')) {
+                                calcValue = calcValue.substring(1);
+                            } else {
+                                calcValue = '-' + calcValue;
+                            }
+                            updateDisplay(calcValue);
+                        }
+                    } catch {
+                        updateDisplay('错误');
+                    }
+                    break;
+
+                case '1/x':
+                    try {
+                        const num = parseFloat(calcValue || '0');
+                        if (num !== 0) {
+                            lastResult = 1 / num;
+                            updateDisplay(formatNumber(lastResult));
+                            calcValue = String(lastResult);
+                            isNewCalculation = true;
+                        } else {
+                            updateDisplay('错误');
+                        }
+                    } catch {
+                        updateDisplay('错误');
+                    }
+                    break;
+
+                case 'π':
+                    lastResult = Math.PI;
+                    updateDisplay(formatNumber(lastResult));
+                    calcValue = String(lastResult);
+                    isNewCalculation = true;
+                    break;
+
+                // 内存功能
+                case 'MC':
+                    memoryValue = 0;
+                    updateMemoryDisplay();
+                    break;
+
+                case 'MR':
+                    calcValue = String(memoryValue);
+                    updateDisplay(formatNumber(memoryValue));
+                    isNewCalculation = true;
+                    break;
+
+                case 'M+':
+                    try {
+                        const num = parseFloat(calcValue || '0');
+                        memoryValue += num;
+                        updateMemoryDisplay();
+                        isNewCalculation = true;
+                    } catch {
+                        updateDisplay('错误');
+                    }
+                    break;
+
+                case 'M-':
+                    try {
+                        const num = parseFloat(calcValue || '0');
+                        memoryValue -= num;
+                        updateMemoryDisplay();
+                        isNewCalculation = true;
+                    } catch {
+                        updateDisplay('错误');
+                    }
+                    break;
+            }
+        });
+        const offTimeInput = document.getElementById('offTime');
+        const countdownDiv = document.getElementById('countdown');
+
+        function updateCountdown() {
+            const now = new Date();
+            const [offHour, offMinute] = offTimeInput.value.split(":").map(Number);
+            let offTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), offHour, offMinute, 0);
+            if (offTime < now) {
+                // 如果已经过了下班时间，显示明天的下班时间
+                offTime.setDate(offTime.getDate() + 1);
+            }
+            let diff = Math.floor((offTime - now) / 1000);
+            if (diff < 0) diff = 0;
+            const hours = String(Math.floor(diff / 3600)).padStart(2, '0');
+            const minutes = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+            const seconds = String(diff % 60).padStart(2, '0');
+            countdownDiv.textContent = `距离下班还有 ${hours}:${minutes}:${seconds}`;
+        }
+
+        offTimeInput.addEventListener('input', updateCountdown);
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+    <script>
+        // 税率计算器逻辑
+        const taxIncludedInput = document.getElementById('tax-included');
+        const taxExcludedInput = document.getElementById('tax-excluded');
+        const taxRateInput = document.getElementById('tax-rate');
+        const taxTip = document.getElementById('tax-tip');
+        let taxLock = false;
+        function formatTaxNum(num) {
+            if (isNaN(num) || num === null) return '';
+            return parseFloat(num).toFixed(2).replace(/\.00$/, '');
+        }
+        function updateTaxCalculator() {
+            if (taxLock) return;
+            taxLock = true;
+            let included = parseFloat(taxIncludedInput.value);
+            let excluded = parseFloat(taxExcludedInput.value);
+            let rate = parseFloat(taxRateInput.value);
+            if (!isNaN(included) && !isNaN(rate) && (taxExcludedInput !== document.activeElement)) {
+                // 含税金额和税率已输入，算不含税金额
+                if (rate === 0) {
+                    excluded = included;
+                } else {
+                    excluded = included / (1 + rate / 100);
+                }
+                taxExcludedInput.value = formatTaxNum(excluded);
+                taxTip.textContent = `不含税金额 = 含税金额 ÷ (1 + 税率%)`;
+            } else if (!isNaN(excluded) && !isNaN(rate) && (taxIncludedInput !== document.activeElement)) {
+                // 不含税金额和税率已输入，算含税金额
+                included = excluded * (1 + rate / 100);
+                taxIncludedInput.value = formatTaxNum(included);
+                taxTip.textContent = `含税金额 = 不含税金额 × (1 + 税率%)`;
+            } else {
+                taxTip.textContent = '';
+            }
+            taxLock = false;
+        }
+        taxIncludedInput.addEventListener('input', updateTaxCalculator);
+        taxExcludedInput.addEventListener('input', updateTaxCalculator);
+        taxRateInput.addEventListener('input', updateTaxCalculator);
+        taxIncludedInput.addEventListener('focus', updateTaxCalculator);
+        taxExcludedInput.addEventListener('focus', updateTaxCalculator);
+        taxRateInput.addEventListener('focus', updateTaxCalculator);
+    </script>
