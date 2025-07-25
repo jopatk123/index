@@ -37,10 +37,10 @@ git clone https://github.com/your-username/countdown-app.git .
 ### 3. 验证部署
 ```bash
 # 检查容器状态
-docker-compose ps
+docker compose ps
 
 # 查看日志
-docker-compose logs -f
+docker compose logs -f
 
 # 测试访问
 curl http://localhost:10010
@@ -53,19 +53,19 @@ curl http://localhost:10010
 
 ```bash
 # 查看应用状态
-docker-compose ps
+docker compose ps
 
 # 重启应用
-docker-compose restart
+docker compose restart
 
 # 更新应用
 git pull && ./deploy.sh
 
 # 查看日志
-docker-compose logs -f
+docker compose logs -f
 
 # 停止应用
-docker-compose down
+docker compose down
 ```
 
 ## 故障排除

@@ -26,10 +26,9 @@ sudo systemctl enable docker
 echo "配置Docker用户权限..."
 sudo usermod -aG docker $USER
 
-# 安装docker-compose (独立版本)
-echo "安装docker-compose..."
-sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+# Docker Compose 已经作为插件安装，无需额外安装
+echo "验证Docker Compose插件..."
+docker compose version
 
 # 创建项目目录
 echo "创建项目目录..."

@@ -25,13 +25,13 @@ cd countdown-app
 
 ```bash
 # 构建并启动
-docker-compose up -d
+docker compose up -d
 
 # 查看状态
-docker-compose ps
+docker compose ps
 
 # 查看日志
-docker-compose logs -f
+docker compose logs -f
 ```
 
 ### 方法三：直接使用Docker
@@ -104,7 +104,7 @@ git clone <your-repo-url> .
 
 ### 查看容器日志
 ```bash
-docker-compose logs -f web
+docker compose logs -f web
 ```
 
 ### 重新部署
@@ -114,7 +114,7 @@ docker-compose logs -f web
 
 ### 手动重启
 ```bash
-docker-compose restart
+docker compose restart
 ```
 
 ## 自定义配置
@@ -152,16 +152,16 @@ sudo setsebool -P container_manage_cgroup on
 ### 服务管理
 ```bash
 # 查看应用状态
-docker-compose ps
+docker compose ps
 
 # 查看应用日志
-docker-compose logs -f
+docker compose logs -f
 
 # 重启应用
-docker-compose restart
+docker compose restart
 
 # 停止应用
-docker-compose down
+docker compose down
 
 # 完全重新部署
 ./deploy.sh

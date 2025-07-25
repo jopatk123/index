@@ -9,27 +9,27 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-# 检查docker-compose是否安装
-if ! command -v docker-compose &> /dev/null; then
-    echo "docker-compose未安装，请先安装docker-compose"
+# 检查docker compose是否可用
+if ! docker compose version &> /dev/null; then
+    echo "Docker Compose未安装或不可用，请先安装Docker Compose"
     exit 1
 fi
 
 # 停止现有容器
 echo "停止现有容器..."
-docker-compose down
+docker compose down
 
 # 构建新镜像
 echo "构建Docker镜像..."
-docker-compose build --no-cache
+docker compose build --no-cache
 
 # 启动容器
 echo "启动容器..."
-docker-compose up -d
+docker compose up -d
 
 # 检查容器状态
 echo "检查容器状态..."
-docker-compose ps
+docker compose ps
 
 # 清理未使用的镜像
 echo "清理未使用的Docker镜像..."
